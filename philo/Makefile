@@ -6,12 +6,12 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 18:43:33 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/01 14:32:09 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/01 19:13:44 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
-SRC = main.c
+SRC = main.c philo_utils.c ft_atoll.c
 SRC_OBJ = $(SRC:.c=.o)
 
 $(NAME): $(SRC_OBJ) 
