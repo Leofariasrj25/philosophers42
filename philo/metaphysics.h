@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/04 22:02:44 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:40:53 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define METAPHYSICS_H
 
 # include <pthread.h>
-# include <unistd.h>
+# include <sys/time.h>
+# include <stdlib.h>
 
 #ifndef PHILO_SLEEP
 # define PHILO_SLEEP 1
@@ -65,7 +66,18 @@ typedef struct s_dinning_table
 	unsigned int	simulation_start;
 }	t_table;
 
-// utils
+// simulation
+pthread_t	**dinner_start(t_philo *philos, t_meta *philo_info, int *op_code);
+int			dinner_end(t_philo *philos, pthread_t **philo_threads, int philo_size);
+void		*simulation(void *param);
+t_philo		*philo_create(t_meta *philo_info);
+
+//input
+int			get_input(int argc, char **argv, int *values);
+int			load_values(t_meta *philo_info, int *values);
+
+// output 
+void		print_status(t_philo *philosopher, char *msg);
 void		put_str_fd(int fd, char *c);
 void		put_err_str(char *c);
 long long	ft_atoll(char *str);
