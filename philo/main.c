@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:24:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/04 22:11:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/05 02:19:44 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,68 +80,79 @@ int	load_values(t_meta *philo_info, int *values)
 	return (0);
 }
 
-int	philo_create(t_philo **philos, t_meta *philo_info)
+t_philo	*philo_create(t_meta *philo_info)
 {
 	unsigned int	i;
+	t_philo			*philos;
 
 	philos = malloc(sizeof(t_philo) * philo_info->n_of_philos);
 	if (!philos)
-		return (-1);
+		return (NULL);
 	i = 0;
 	while (i < philo_info->n_of_philos)
 	{
-		philos[i]->philo_id = i;
-		philos[i]->tt_die = philo_info->tt_die;
-		philos[i]->tt_eat = philo_info->tt_eat;
-		philos[i]->tt_sleep = philo_info->tt_sleep;
-		philos[i]->min_meals = philo_info->min_meals;
-		philos[i]->state_change = 0;
-		philos[i]->state = PHILO_THINK; 
-		philos[i]->lt_eat = 0;
-		philos[i]->lt_sleep = 0;
-		philos[i]->print_mutex = &philo_info->print_mutex;
+		philos[i].philo_id = i;
+		philos[i].tt_die = philo_info->tt_die;
+		philos[i].tt_eat = philo_info->tt_eat;
+		philos[i].tt_sleep = philo_info->tt_sleep;
+		philos[i].min_meals = philo_info->min_meals;
+		philos[i].state_change = 0;
+		philos[i].state = PHILO_THINK; 
+		philos[i].lt_eat = 0;
+		philos[i].lt_sleep = 0;
+		philos[i].print_mutex = &philo_info->print_mutex;
 		i++;
 	}
-	return (0);
+	i = 0;
+	while (i < philo_info->n_of_philos)
+	{
+		printf("The philo index is %i and its id is %i\n", i, philos[i].philo_id);
+		i++;
+	}
+	return (philos);
 }
 
-int dinner_start(t_philo *philos, t_meta *philo_info, pthread_t *philo_threads)
+pthread_t	**dinner_start(t_philo *philos, t_meta *philo_info, int *op_code)
 {
 	unsigned int		i;
 	struct timeval		start;
+	pthread_t			**philo_threads;
 	long				timestamp;
 
 	i = 0;
-	philo_threads = malloc(sizeof(pthread_t) * philo_info->n_of_philos);
+	philo_threads = malloc(sizeof(pthread_t *) * philo_info->n_of_philos);
 	if (!philo_threads)
 	{
 		put_err_str("{ERROR}: malloc malfunction\n");
-		return (-1);
+		*op_code = -1;
+		return (NULL);
 	}
 	gettimeofday(&start, NULL);
 	timestamp = start.tv_sec * 1000;
 	while (i < philo_info->n_of_philos)
 	{
 		philos[i].matrix_start = timestamp;
-		if (pthread_create(&philo_threads[i], \
+		philo_threads[i] = malloc(sizeof(pthread_t));
+		if (pthread_create(philo_threads[i], \
 			 NULL, simulation, (void *) &philos[i]) != 0)
 		{
 			put_err_str("{ERROR}: error during thread creation\n");
-			return (-1);
+			*op_code = -1;
+			return (NULL);
 		}
 		i++;
 	}
-	return (0);
+	return (philo_threads);
 }
 
-int dinner_end(t_philo *philos, pthread_t *philo_threads, int philo_size) 
+int dinner_end(t_philo *philos, pthread_t **philo_threads, int philo_size) 
 {
 	int	i;
 
 	i = 0;
 	while (i < philo_size)
 	{
-		pthread_join(philo_threads[i], NULL);
+		pthread_join(*philo_threads[i], NULL);
 		i++;
 	}
 	pthread_mutex_destroy(philos[0].print_mutex);
@@ -154,19 +165,27 @@ int	main(int argc, char **argv)
 	static int	values[5] = {-1, -1, -1, -1, -1};	
 	int			op_code;
 	t_meta		philo_info;
-	t_philo		philos;
-	pthread_t	philo_threads;
+	t_philo		*philos;
+	pthread_t	**philo_threads;
 
 	op_code = get_input(argc, argv, values);
 	if (op_code != 0)
 		return (op_code);
 	op_code = load_values(&philo_info, values);
+	printf("Philo number %i\n", philo_info.n_of_philos);
+	printf("Philo tt_die %i\n", philo_info.tt_die);
+	printf("Philo tt_eat %i\n", philo_info.tt_eat);
+	printf("Philo tt_sleep %i\n", philo_info.tt_sleep);
 	if (op_code != 0)
 		return (op_code);
-	op_code = philo_create(&philos, &philo_info);
-	if (op_code != 0)
-		return (op_code);
-	op_code = dinner_start(philos, &philo_info, philo_threads); 
+	philos = philo_create(&philo_info);
+	if (philos == NULL)
+		return (-4);
+	for (unsigned int i = 0; i < philo_info.n_of_philos; i++)
+	{
+		printf("Philo number %i philo_id is %i\n", i, philos[i].philo_id);
+	}
+	philo_threads = dinner_start(philos, &philo_info, &op_code); 
 	if (op_code != 0)
 		return (op_code);
 	op_code = dinner_end(philos, philo_threads, philo_info.n_of_philos);
