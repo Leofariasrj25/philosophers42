@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/09 18:22:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/09 20:19:18 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@ typedef struct s_thinker
 	unsigned int	tt_sleep;
 	unsigned int	min_meals;
 	unsigned int	lt_eat;
- 	unsigned int	lt_sleep;
-	unsigned int	state_change:1;
+	unsigned int	n_of_philos;
 	unsigned int	state;
 	unsigned int	has_lfork:1;
 	unsigned int	has_rfork:1;
 	unsigned long	matrix_start;
 	pthread_mutex_t	*print_mutex;
 	pthread_mutex_t **forks;
+	pthread_mutex_t *rfork_mutex;
+	pthread_mutex_t *lfork_mutex;
 }	t_philo;
 
 typedef struct s_perfect_fork
@@ -80,10 +81,12 @@ int				philo_sleep(t_philo *philosopher);
 int				philo_eat_meal(t_philo *philosopher);
 int				philo_take_lfork(t_philo *philosopher);
 int				philo_take_rfork(t_philo *philosopher);
-	
+
 // time
 unsigned int	elapsed_time_ms(unsigned int timestamp_ms);
 int				tstamp_cmp_ms(unsigned int ts1, unsigned int ts2);
+unsigned int	getcurrtime_ms();
+
 //input
 int				get_input(int argc, char **argv, int *values);
 int				load_values(t_meta *philo_info, int *values);
