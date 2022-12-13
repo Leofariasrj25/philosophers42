@@ -6,37 +6,99 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:51:17 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/09 23:48:30 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:18:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "metaphysics.h"
+#include <pthread.h>
 
-t_philo	*philo_create(t_meta *philo_info)
+#define N_OF_PHILOS 0
+#define TT_DIE 1
+#define TT_EAT 2
+#define TT_SLEEP 3
+#define MIN_MEALS 4
+
+int				load_meta(t_philo *philosopher, int *values);
+int				load_defaults(int p_id, t_philo *ph, pthread_mutex_t *print_m);
+t_philo			*alloc_philos(int n_of_philos);
+pthread_mutex_t	*create_print_mutex(void);
+
+t_philo	*philo_create(int *values)
 {
-	unsigned int	i;
+	int				i;
 	t_philo			*philos;
+	pthread_mutex_t	*print_mutex;
 
-	philos = malloc(sizeof(t_philo) * philo_info->n_of_philos);
+	i = -1;
+	philos = alloc_philos(values[N_OF_PHILOS]);
 	if (!philos)
 		return (NULL);
-	i = 0;
-	while (i < philo_info->n_of_philos)
+	print_mutex = create_print_mutex();
+	if (!print_mutex)
 	{
-		philos[i].philo_id = i + 1;
-		philos[i].n_of_philos = philo_info->n_of_philos;
-		philos[i].tt_die = philo_info->tt_die;
-		philos[i].tt_eat = philo_info->tt_eat;
-		philos[i].tt_sleep = philo_info->tt_sleep;
-		philos[i].min_meals = philo_info->min_meals;
-		philos[i].state = PHILO_THINK; 
-		philos[i].lt_eat = 0;
-		philos[i].has_lfork = 0;
-		philos[i].has_rfork = 0;
-		philos[i].lfork_mutex = NULL;
-		philos[i].rfork_mutex = NULL;
-		philos[i].print_mutex = &philo_info->print_mutex;
-		i++;
+		free(philos);
+		return (NULL);
 	}
+	while (++i < values[N_OF_PHILOS])
+	{
+		philo_load_meta(&philos[i], values);
+		if (load_defaults(i + 1, &philos[i], print_mutex) != 0)
+		{
+			free(philos);
+			pthread_mutex_destroy(print_mutex);
+			return (NULL);
+		}
+	}
+	return (philos);
+}
+
+int	load_defaults(int p_id, t_philo *philo, pthread_mutex_t *p_mutex)
+{
+	philo->philo_id = p_id;
+	philo->ticket_n = p_id;
+	philo->state = PHILO_THINK;
+	philo->lt_eat = 0;
+	philo->waiter_lock = NULL;
+	philo->ask_permission = 0;
+	philo->permission_to_eat = 0;
+	philo->lfork_mutex = NULL;
+	philo->rfork_mutex = NULL;
+	philo->print_mutex = p_mutex;
+	philo->waiter_lock = ph_calloc(1, sizeof(pthread_mutex_t));
+	if (mutex_start(philo->waiter_lock) != 0)
+		return (-1);
+	return (0);
+}
+
+int	load_meta(t_philo *philosopher, int *values)
+{
+	if (!philosopher || !values)
+		return (-1);
+	philosopher->n_of_philos = values[N_OF_PHILOS];
+	philosopher->tt_die = values[TT_DIE];
+	philosopher->tt_eat = values[TT_EAT];
+	philosopher->tt_sleep = values[TT_SLEEP];
+	philosopher->min_meals = values[MIN_MEALS];
+	return (0);
+}
+
+pthread_mutex_t	*create_print_mutex(void)
+{
+	pthread_mutex_t	*print_mutex;
+
+	print_mutex = ph_calloc(1, sizeof(pthread_mutex_t));
+	if (mutex_start(print_mutex) != 0)
+		return (NULL);
+	return (print_mutex);
+}
+
+t_philo	*alloc_philos(int n_of_philos)
+{
+	t_philo	*philos;
+
+	philos = malloc(sizeof(t_philo) * n_of_philos);
+	if (test_alloc(philos))
+		return (NULL);
 	return (philos);
 }

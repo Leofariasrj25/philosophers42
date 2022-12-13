@@ -6,10 +6,9 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 19:01:50 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/01 19:24:52 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:58:46 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 int	is_space(char c)
 {
@@ -19,7 +18,7 @@ int	is_space(char c)
 		return (0);
 }
 
-int is_digit(char c)
+int	is_digit(char c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
@@ -27,7 +26,7 @@ int is_digit(char c)
 		return (0);
 }
 
-long long ft_atoll(char *str)
+long long	ft_atoll(char *str)
 {
 	long long	number;
 	int			i;

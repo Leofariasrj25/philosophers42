@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:02:42 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/05 15:41:23 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:54:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	put_str_fd(int fd, char *str)
 
 	if (!str)
 		return ;
-	len = 0;	
+	len = 0;
 	while (str[len])
 		len++;
 	write(fd, str, len);

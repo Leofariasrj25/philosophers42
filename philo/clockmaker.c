@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:57:57 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/09 18:57:08 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:51:56 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	tstamp_cmp_ms(unsigned int ts1, unsigned int ts2)
 	return (0);
 }
 
-unsigned int	getcurrtime_ms()
+unsigned int	getcurrtime_ms(void)
 {
-	struct timeval current_time;
+	struct timeval	current_time;
 
 	gettimeofday(&current_time, NULL);
 	return ((unsigned int)(current_time.tv_sec * 1000));

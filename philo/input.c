@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:50:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/05 14:01:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:56:03 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int	get_input(int argc, char **argv, int *values)
 		put_err_str(usage);
 		return (1);
 	}
-	ret_code = check_input_values(argc, argv, values);	
+	ret_code = check_input_values(argc, argv, values);
 	if (ret_code == 2)
 	{
-		err_msg = "{ERROR}: arg(s) must be greater than zero\n"; 
+		err_msg = "{ERROR}: arg(s) must be greater than zero\n";
 		put_err_str(err_msg);
 	}
 	if (ret_code == 3)
@@ -49,27 +49,10 @@ int	get_input(int argc, char **argv, int *values)
 	return (ret_code);
 }
 
-int	load_values(t_meta *philo_info, int *values)
-{
-	if (!philo_info || !values)
-		return (-1);
-	philo_info->n_of_philos = values[0];
-	philo_info->tt_die = values[1];
-	philo_info->tt_eat = values[2];
-	philo_info->tt_sleep = values[3];
-	philo_info->min_meals = values[4];
-	if (pthread_mutex_init(&philo_info->print_mutex, NULL) != 0)
-	{
-		put_err_str("{ERROR}: Could not start mutex print");
-		return (-1);
-	}
-	return (0);
-}
-
 int	check_input_values(int argc, char **argv, int *values)
 {
-	long long number; 
-	int		i;
+	long long	number;
+	int			i;
 
 	i = 1;
 	while (i < argc)
