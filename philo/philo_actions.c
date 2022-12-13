@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:29:01 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 22:11:56 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/12 23:25:17 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	philo_sleep(t_philo *philo)
 	if (philo->rfork_mutex != NULL)
 		pthread_mutex_unlock(philo->rfork_mutex);
 	philo->rfork_mutex = NULL;
+	philo->permission_to_eat = 0;
+	philo->ask_permission = 0;
 	c_time = getcurrtime_ms();
 	if (c_time + philo->tt_sleep < c_time + philo->tt_die)
 	{

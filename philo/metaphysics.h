@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 21:57:25 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 00:32:05 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int				check_alive(t_philo *philosopher);
 
 // waiter
 void			*waiter_serve(void *param);
-t_table			*init_waiter_service(void);
+void			init_waiter_service(t_table *table);
 unsigned long	get_ticket(void);
 
 // time

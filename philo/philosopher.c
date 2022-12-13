@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:51:17 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 21:18:49 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 00:21:00 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_philo	*philo_create(int *values)
 	}
 	while (++i < values[N_OF_PHILOS])
 	{
-		philo_load_meta(&philos[i], values);
+		load_meta(&philos[i], values);
 		if (load_defaults(i + 1, &philos[i], print_mutex) != 0)
 		{
 			free(philos);

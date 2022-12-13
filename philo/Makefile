@@ -6,13 +6,15 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 18:43:33 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/12 21:50:56 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/13 02:15:22 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 	= 	philo
 CFLAGS 	= 	-Wall -Wextra -Werror -g 
-LDFLAGS	=	-lpthread
+#-fsanitize=address
+LDFLAGS	=	-lpthread 
+#-fsanitize=address
 SRC 	= 	main.c \
 			philosopher.c \
 			input.c \
