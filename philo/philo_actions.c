@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:29:01 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 23:25:17 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 22:37:50 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ int	philo_eat_meal(t_philo *philosopher)
 		print_status(philosopher, "is eating");
 		while (1)
 		{
-			if (elapsed_time_ms(philosopher->lt_eat) >= philosopher->tt_die \
+			if (elapsed_time_since(philosopher->lt_eat) >= philosopher->tt_die \
 				&& philosopher->state == PHILO_EAT)
 			{
 				philosopher->state = PHILO_DEAD;
 				return (PHILO_DEAD);
 			}
-			if (elapsed_time_ms(philosopher->lt_eat) >= philosopher->tt_eat \
+			if (elapsed_time_since(philosopher->lt_eat) >= philosopher->tt_eat \
 				&& philosopher->state == PHILO_EAT)
 			{
 				return (philo_sleep(philosopher));
@@ -48,40 +48,30 @@ int	philo_sleep(t_philo *philo)
 		return (-1);
 	print_status(philo, "is sleeping");
 	philo->state = PHILO_SLEEP;
-	if (philo->lfork_mutex != NULL)
-		pthread_mutex_unlock(philo->lfork_mutex);
-	philo->lfork_mutex = NULL;
-	if (philo->rfork_mutex != NULL)
-		pthread_mutex_unlock(philo->rfork_mutex);
-	philo->rfork_mutex = NULL;
-	philo->permission_to_eat = 0;
-	philo->ask_permission = 0;
+	philo_put_forks_down(philo);
 	c_time = getcurrtime_ms();
 	if (c_time + philo->tt_sleep < c_time + philo->tt_die)
 	{
-		usleep(philo->tt_sleep * 1000);
+		micro_sleep(philo->tt_sleep * 1000);
 		return (PHILO_THINK);
 	}
 	else
 	{
 		sleep_time = (c_time + philo->tt_sleep) - (c_time + philo->tt_die);
-		usleep(sleep_time * 1000);
+		micro_sleep(sleep_time * 1000);
 		return (PHILO_DEAD);
 	}
 }
 
 int	philo_take_lfork(t_philo *philosopher)
 {	
-	int	lfork_i;
-
 	if (!philosopher)
 		return (-1);
-	lfork_i = philosopher->philo_id - 1;
-	if (philosopher->state == PHILO_THINK && philosopher->lfork_mutex == 0)
+	if (philosopher->state == PHILO_THINK && philosopher->lfork_mutex == NULL)
 	{
-		if (pthread_mutex_lock(&philosopher->forks[lfork_i]) == 0)
+		if (pthread_mutex_lock(&philosopher->forks[philosopher->philo_id - 1]) == 0)
 		{
-			philosopher->lfork_mutex = &philosopher->forks[lfork_i];
+			philosopher->lfork_mutex = &philosopher->forks[philosopher->philo_id - 1];
 			print_status(philosopher, "has taken left fork");
 			return (0);
 		}
@@ -89,19 +79,20 @@ int	philo_take_lfork(t_philo *philosopher)
 	return (-1);
 }
 
+unsigned int	get_right_index(t_philo *ph)
+{
+	return ((ph->philo_id - 2 + ph->n_of_philos) % ph->n_of_philos);
+}
+
 int	philo_take_rfork(t_philo *philo)
 {
-	int	rfork_i;
-
 	if (!philo)
 		return (-1);
-	rfork_i = (philo->philo_id - 2 + philo->n_of_philos) % philo->n_of_philos;
-	if (philo->state == PHILO_THINK && philo->rfork_mutex == 0)
+	if (philo->state == PHILO_THINK && philo->rfork_mutex == NULL)
 	{
-		if (pthread_mutex_lock(&philo->forks[rfork_i]) == 0)
+		if (pthread_mutex_lock(&philo->forks[get_right_index(philo)]) == 0)
 		{
-			pthread_mutex_lock(&philo->forks[rfork_i]);
-			philo->rfork_mutex = &philo->forks[rfork_i];
+			philo->rfork_mutex = &philo->forks[get_right_index(philo)];
 			print_status(philo, "has taken right fork");
 			return (0);
 		}
@@ -109,20 +100,37 @@ int	philo_take_rfork(t_philo *philo)
 	return (-1);
 }
 
+#include <stdio.h>
 int	check_alive(t_philo *philosopher)
 {
-	struct timeval	current_time;
-	long			ctime_ms;
 	long			time_diff;
+	unsigned int	ctime_ms;
 
-	gettimeofday(&current_time, NULL);
-	ctime_ms = current_time.tv_sec * 1000;
+	pthread_mutex_lock(philosopher->print_mutex);
+	ctime_ms = getcurrtime_ms();
 	if (philosopher->lt_eat == 0)
-		time_diff = ctime_ms - philosopher->matrix_start;
+		time_diff = (long)(ctime_ms - philosopher->matrix_start);
 	else
-		time_diff = ctime_ms - philosopher->lt_eat;
-	if (time_diff >= 0)
+		time_diff = (long)(ctime_ms - philosopher->lt_eat);
+	printf("%ld\n", time_diff);
+	pthread_mutex_unlock(philosopher->print_mutex);
+	if (((unsigned int) time_diff) < philosopher->tt_die)
 		return (1);
 	else
 		return (0);
+}
+
+int	philo_put_forks_down(t_philo *philosopher)
+{
+	if (philosopher->lfork_mutex != NULL)
+	{
+		pthread_mutex_unlock(philosopher->lfork_mutex);
+		philosopher->lfork_mutex = NULL;
+	}
+	if (philosopher->rfork_mutex != NULL)
+	{
+		pthread_mutex_unlock(philosopher->rfork_mutex);
+		philosopher->rfork_mutex = NULL;
+	}
+	return (0);
 }

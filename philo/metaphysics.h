@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 00:32:05 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 21:32:12 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,9 @@ typedef struct s_thinker
 	unsigned int	ask_permission:1;
 	unsigned int	lt_eat;
 	unsigned int	state;
-	long			ticket_n;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*rfork_mutex;
 	pthread_mutex_t	*lfork_mutex;
-	pthread_mutex_t	*waiter_lock;
 	pthread_mutex_t	*print_mutex;
 }	t_philo;
 
@@ -59,7 +57,6 @@ typedef struct s_ideal_table
 	int				n_of_philos;
 	int				n_of_forks;
 	t_philo			*philos;
-	pthread_t		*waiter;
 	pthread_t		*philo_threads;
 	pthread_mutex_t	*forks;
 }	t_table;
@@ -77,6 +74,7 @@ int				philo_eat_meal(t_philo *philosopher);
 int				philo_take_lfork(t_philo *philosopher);
 int				philo_take_rfork(t_philo *philosopher);
 int				check_alive(t_philo *philosopher);
+int				philo_put_forks_down(t_philo *philosopher);
 
 // waiter
 void			*waiter_serve(void *param);
@@ -84,9 +82,10 @@ void			init_waiter_service(t_table *table);
 unsigned long	get_ticket(void);
 
 // time
-unsigned int	elapsed_time_ms(unsigned int timestamp_ms);
+unsigned int	elapsed_time_since(unsigned int timestamp_ms);
 int				tstamp_cmp_ms(unsigned int ts1, unsigned int ts2);
 unsigned int	getcurrtime_ms(void);
+void			micro_sleep(unsigned long duration);
 
 //input
 int				get_input(int argc, char **argv, int *values);

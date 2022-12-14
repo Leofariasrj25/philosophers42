@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:24:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 21:52:15 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 23:08:50 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,17 @@ int	main(int argc, char **argv)
 	table.philos = philo_create(values);
 	if (table.philos == NULL)
 		return (-4);
+	table_init(&table);
 	op_code = dinner_start(&table);
 	if (op_code != 0)
 		return (op_code);
-	op_code = dinner_end(&table);
+	//op_code = dinner_end(&table);
 	if (op_code != 0)
 		return (op_code);
 	return (0);
+}
+
+int table_init(t_table *table)
+{
+	table->n
 }

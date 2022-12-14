@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 18:43:33 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/13 02:15:22 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/13 20:19:49 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ SRC 	= 	main.c \
 			printer.c \
 			philo_actions.c \
 			clockmaker.c \
-			waiter.c \
 			ph_calloc.c \
 			ft_atoll.c
 SRC_OBJ	= 	$(SRC:.c=.o)

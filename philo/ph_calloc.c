@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 14:38:32 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 02:24:48 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:54:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ void	*ph_calloc(size_t count, size_t size)
 		count = 1;
 		size = 1;
 	}
-	printf("count is: %ld\n", count);
-	printf("count is: %ld\n", size);
 	ptr = malloc(count * size);
 	if (!ptr)
 		return (NULL);
-	memset(ptr, 0, size);
+	ptr = memset(ptr, 0, size);
 	return (ptr);
 }
 

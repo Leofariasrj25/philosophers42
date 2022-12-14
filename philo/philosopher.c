@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:51:17 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 00:21:00 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/13 19:55:43 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,13 @@ t_philo	*philo_create(int *values)
 int	load_defaults(int p_id, t_philo *philo, pthread_mutex_t *p_mutex)
 {
 	philo->philo_id = p_id;
-	philo->ticket_n = p_id;
 	philo->state = PHILO_THINK;
 	philo->lt_eat = 0;
-	philo->waiter_lock = NULL;
 	philo->ask_permission = 0;
 	philo->permission_to_eat = 0;
 	philo->lfork_mutex = NULL;
 	philo->rfork_mutex = NULL;
 	philo->print_mutex = p_mutex;
-	philo->waiter_lock = ph_calloc(1, sizeof(pthread_mutex_t));
-	if (mutex_start(philo->waiter_lock) != 0)
-		return (-1);
 	return (0);
 }
 
