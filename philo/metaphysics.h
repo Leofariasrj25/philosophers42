@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 21:32:12 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/15 20:03:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 
 typedef struct s_thinker
 {
-	unsigned int	philo_id;
-	unsigned int	n_of_philos;
-	unsigned int	tt_die;
-	unsigned int	tt_eat;
-	unsigned int	tt_sleep;
-	unsigned int	min_meals;
-	unsigned long	matrix_start;
+	long			philo_id;
+	long			n_of_philos;
+    long			tt_die;
+	long			tt_eat;
+	long			tt_sleep;
+	long			min_meals;
+	long			matrix_start;
 	unsigned int	permission_to_eat:1;
 	unsigned int	ask_permission:1;
 	unsigned int	lt_eat;
@@ -50,20 +50,24 @@ typedef struct s_thinker
 	pthread_mutex_t	*rfork_mutex;
 	pthread_mutex_t	*lfork_mutex;
 	pthread_mutex_t	*print_mutex;
+	pthread_mutex_t *state_mutex;
 }	t_philo;
 
 typedef struct s_ideal_table
 {
+	int				is_dinner_over:1;
 	int				n_of_philos;
 	int				n_of_forks;
 	t_philo			*philos;
 	pthread_t		*philo_threads;
+	pthread_t		*monitor_thread;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t *dinner_lock;
 }	t_table;
 
 // simulation
 int				philo_load_meta(t_philo *philosopher, int *values);
-t_philo			*philo_create(int *values);
+t_philo			*philo_create(long *values);
 int				dinner_start(t_table *dinner_table);
 int				dinner_end(t_table *dinner_table);
 void			*simulation(void *param);
@@ -76,19 +80,17 @@ int				philo_take_rfork(t_philo *philosopher);
 int				check_alive(t_philo *philosopher);
 int				philo_put_forks_down(t_philo *philosopher);
 
-// waiter
-void			*waiter_serve(void *param);
-void			init_waiter_service(t_table *table);
-unsigned long	get_ticket(void);
+// monitor
+int				monitor_start(t_table *dinner_table);
+void			*monitor_watch(void *param);
 
 // time
-unsigned int	elapsed_time_since(unsigned int timestamp_ms);
-int				tstamp_cmp_ms(unsigned int ts1, unsigned int ts2);
-unsigned int	getcurrtime_ms(void);
-void			micro_sleep(unsigned long duration);
+long			elapsed_time_since(unsigned int timestamp_ms);
+long			getcurrtime_ms(void);
+void			micro_sleep(long duration);
 
 //input
-int				get_input(int argc, char **argv, int *values);
+int				get_input(int argc, char **argv, long *values);
 long long		ft_atoll(char *str);
 
 // output 
@@ -101,4 +103,7 @@ void			*ph_calloc(size_t count, size_t size);
 int				test_alloc(void *ptr);
 int				mutex_start(pthread_mutex_t *mutex);
 int				thread_start(pthread_t *thread, void *(f)(void *), void *p);
+void			destroy_all_philos(t_philo *philos, int n_of_philos);
+void			destroy_all_forks(pthread_mutex_t *forks, int n_of_forks);
+void			destroy_philo_locks(t_philo *philos);
 #endif

@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 18:43:33 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/13 20:19:49 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/15 18:02:05 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC 	= 	main.c \
 			input.c \
 			matrix.c \
 			printer.c \
+			monitor.c \
 			philo_actions.c \
 			clockmaker.c \
 			ph_calloc.c \
@@ -40,6 +41,6 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) 5 1000 5000 1000
+	./$(NAME) 5 1000 1000 1000
 
 
