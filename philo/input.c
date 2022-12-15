@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:50:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 21:56:03 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:31:52 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #endif 
 
 int	check_input_size(int argc);
-int	get_input(int argc, char **argv, int *values);
-int	check_input_values(int argc, char **argv, int *values);
+int	get_input(int argc, char **argv, long *values);
+int	check_input_values(int argc, char **argv, long *values);
 
-int	get_input(int argc, char **argv, int *values)
+int	get_input(int argc, char **argv, long *values)
 {
 	char	*err_msg;
 	char	*usage;
@@ -49,7 +49,7 @@ int	get_input(int argc, char **argv, int *values)
 	return (ret_code);
 }
 
-int	check_input_values(int argc, char **argv, int *values)
+int	check_input_values(int argc, char **argv, long *values)
 {
 	long long	number;
 	int			i;
@@ -63,7 +63,7 @@ int	check_input_values(int argc, char **argv, int *values)
 		else if (number > U_INT_MAX)
 			return (3);
 		else
-			values[i - 1] = (unsigned int) number;
+			values[i - 1] = (long) number;
 		i++;
 	}
 	return (0);

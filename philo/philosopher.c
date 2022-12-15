@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:51:17 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 19:55:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:56:33 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 #define TT_SLEEP 3
 #define MIN_MEALS 4
 
-int				load_meta(t_philo *philosopher, int *values);
+int				load_meta(t_philo *philosopher, long *values);
 int				load_defaults(int p_id, t_philo *ph, pthread_mutex_t *print_m);
 t_philo			*alloc_philos(int n_of_philos);
 pthread_mutex_t	*create_print_mutex(void);
 
-t_philo	*philo_create(int *values)
+t_philo	*philo_create(long *values)
 {
 	int				i;
 	t_philo			*philos;
@@ -66,15 +66,15 @@ int	load_defaults(int p_id, t_philo *philo, pthread_mutex_t *p_mutex)
 	return (0);
 }
 
-int	load_meta(t_philo *philosopher, int *values)
+int	load_meta(t_philo *philosopher, long *values)
 {
 	if (!philosopher || !values)
 		return (-1);
 	philosopher->n_of_philos = values[N_OF_PHILOS];
-	philosopher->tt_die = values[TT_DIE];
-	philosopher->tt_eat = values[TT_EAT];
-	philosopher->tt_sleep = values[TT_SLEEP];
-	philosopher->min_meals = values[MIN_MEALS];
+	philosopher->tt_die = values[TT_DIE] * 1000;
+	philosopher->tt_eat = values[TT_EAT] * 1000;
+	philosopher->tt_sleep = values[TT_SLEEP] * 1000;
+	philosopher->min_meals = values[MIN_MEALS] * 1000;
 	return (0);
 }
 

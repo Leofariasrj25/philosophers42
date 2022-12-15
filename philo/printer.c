@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:02:42 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 19:52:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:51:52 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_status(t_philo *philosopher, char *status)
 
 	pthread_mutex_lock(philosopher->print_mutex);
 	timestamp = getcurrtime_ms() - philosopher->matrix_start;
-	printf("[%ld] %d %s\n", timestamp, philosopher->philo_id, status);
+	printf("[%ld] %ld %s\n", timestamp, philosopher->philo_id, status);
 	pthread_mutex_unlock(philosopher->print_mutex);
 }
 
