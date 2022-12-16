@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/15 20:03:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/16 19:58:19 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_thinker
 {
 	long			philo_id;
 	long			n_of_philos;
-    long			tt_die;
+	long			tt_die;
 	long			tt_eat;
 	long			tt_sleep;
 	long			min_meals;
@@ -50,7 +50,7 @@ typedef struct s_thinker
 	pthread_mutex_t	*rfork_mutex;
 	pthread_mutex_t	*lfork_mutex;
 	pthread_mutex_t	*print_mutex;
-	pthread_mutex_t *state_mutex;
+	pthread_mutex_t	*state_mutex;
 }	t_philo;
 
 typedef struct s_ideal_table
@@ -62,7 +62,7 @@ typedef struct s_ideal_table
 	pthread_t		*philo_threads;
 	pthread_t		*monitor_thread;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t *dinner_lock;
+	pthread_mutex_t	*dinner_lock;
 }	t_table;
 
 // simulation
@@ -100,10 +100,10 @@ void			put_err_str(char *c);
 
 // utils
 void			*ph_calloc(size_t count, size_t size);
-int				test_alloc(void *ptr);
 int				mutex_start(pthread_mutex_t *mutex);
 int				thread_start(pthread_t *thread, void *(f)(void *), void *p);
 void			destroy_all_philos(t_philo *philos, int n_of_philos);
 void			destroy_all_forks(pthread_mutex_t *forks, int n_of_forks);
 void			destroy_philo_locks(t_philo *philos);
+void			destroy_table(t_table *table);
 #endif

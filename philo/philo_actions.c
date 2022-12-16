@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:29:01 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/13 22:37:50 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:05:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	philo_take_lfork(t_philo *philosopher)
 {	
 	if (!philosopher)
 		return (-1);
+	if (philosopher->philo_id == philosopher->n_of_philos)
+		return (philo_take_rfork(philosopher));
 	if (philosopher->state == PHILO_THINK && philosopher->lfork_mutex == NULL)
 	{
 		if (pthread_mutex_lock(&philosopher->forks[philosopher->philo_id - 1]) == 0)
@@ -88,6 +90,8 @@ int	philo_take_rfork(t_philo *philo)
 {
 	if (!philo)
 		return (-1);
+	if (philo->philo_id == philo->n_of_philos)
+		return (philo_take_lfork(philo));
 	if (philo->state == PHILO_THINK && philo->rfork_mutex == NULL)
 	{
 		if (pthread_mutex_lock(&philo->forks[get_right_index(philo)]) == 0)
