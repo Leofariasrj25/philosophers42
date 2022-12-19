@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 17:25:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/15 17:54:33 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/17 23:14:39 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ void	*monitor_watch(void *param)
 		while (i < dinner_table->n_of_philos)
 		{
 			philo = &dinner_table->philos[i];
-			if (pthread_mutex_lock(philo->state_lock))
+			if (pthread_mutex_lock(philo->state_mutex))
 			{
 				if (philo->state == PHILO_DEAD)
 				{
-					pthread_mutex_lock(dinner_table->dinner_lock);
-					dinner_table->is_dinner_over = 1;	
-					pthread_mutex_unlock(dinner_table->dinner_lock);
-					pthread_mutex_unlock(philo->state_lock);
+					pthread_mutex_lock(dinner_table->banquet->dinner_mutex);
+					dinner_table->banquet->is_over = 1;	
+					pthread_mutex_unlock(dinner_table->banquet->dinner_mutex);
+					pthread_mutex_unlock(philo->state_mutex);
 					return (NULL);
 				}
-				pthread_mutex_unlock(philo->state_lock);
+				pthread_mutex_unlock(philo->state_mutex);
 			}
 			i++;
 		}

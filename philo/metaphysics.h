@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/16 19:58:19 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:44:03 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 # ifndef PHILO_SLEEP
 #  define PHILO_SLEEP 1
@@ -33,6 +34,12 @@
 #  define PHILO_DEAD 4
 # endif
 
+typedef struct s_philo_dinner
+{
+	pthread_mutex_t	*dinner_mutex;
+	int				is_over;	
+}	t_dinner;
+
 typedef struct s_thinker
 {
 	long			philo_id;
@@ -42,10 +49,9 @@ typedef struct s_thinker
 	long			tt_sleep;
 	long			min_meals;
 	long			matrix_start;
-	unsigned int	permission_to_eat:1;
-	unsigned int	ask_permission:1;
-	unsigned int	lt_eat;
+	long			lt_eat;
 	unsigned int	state;
+	t_dinner		*banquet;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*rfork_mutex;
 	pthread_mutex_t	*lfork_mutex;
@@ -55,26 +61,29 @@ typedef struct s_thinker
 
 typedef struct s_ideal_table
 {
-	int				is_dinner_over:1;
+	t_dinner		*banquet;
 	int				n_of_philos;
 	int				n_of_forks;
 	t_philo			*philos;
 	pthread_t		*philo_threads;
 	pthread_t		*monitor_thread;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*dinner_lock;
 }	t_table;
+
 
 // simulation
 int				philo_load_meta(t_philo *philosopher, int *values);
 t_philo			*philo_create(long *values);
 int				dinner_start(t_table *dinner_table);
 int				dinner_end(t_table *dinner_table);
+int				check_is_dinner_over(t_philo *philo);
+void			set_dinner_over(t_philo *philosopher);
 void			*simulation(void *param);
 
 // philo actions
 int				philo_sleep(t_philo *philosopher);
 int				philo_eat_meal(t_philo *philosopher);
+int				philo_take_forks(t_philo *philosopher);
 int				philo_take_lfork(t_philo *philosopher);
 int				philo_take_rfork(t_philo *philosopher);
 int				check_alive(t_philo *philosopher);
@@ -85,16 +94,16 @@ int				monitor_start(t_table *dinner_table);
 void			*monitor_watch(void *param);
 
 // time
-long			elapsed_time_since(unsigned int timestamp_ms);
-long			getcurrtime_ms(void);
-void			micro_sleep(long duration);
+long			get_timestamp_ms(long time_start_ms);
+long			get_currtime_ms(void);
+void			micro_sleep(long duration, t_philo *philo);
 
 //input
 int				get_input(int argc, char **argv, long *values);
 long long		ft_atoll(char *str);
 
 // output 
-void			print_status(t_philo *philosopher, char *msg);
+void			print_status(t_philo *philosopher, char *msg, int code);
 void			put_str_fd(int fd, char *c);
 void			put_err_str(char *c);
 
