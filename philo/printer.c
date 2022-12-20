@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:02:42 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 15:06:36 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:51:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	print_status(t_philo *philosopher, char *status, int code)
 		philosopher->banquet->is_over = 1;
 		printf("[%ld] %ld %s\n", timestamp, philosopher->philo_id, status);
 		pthread_mutex_unlock(philosopher->print_mutex);
+		pthread_mutex_unlock(philosopher->banquet->dinner_mutex);
+		return ;
 	}
 	if (code != PHILO_DEAD && philosopher->banquet->is_over == 0)
 		printf("[%ld] %ld %s\n", timestamp, philosopher->philo_id, status);
