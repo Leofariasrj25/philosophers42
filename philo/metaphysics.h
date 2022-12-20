@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 23:12:35 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:17:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void			*monitor_watch(void *param);
 // time
 long			get_timestamp_ms(long time_start_ms);
 long			get_currtime_ms(void);
+void			smart_sleep(long duration);
 int				micro_sleep(long duration, t_philo *philosopher);
 
 //input

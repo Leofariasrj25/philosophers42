@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 18:43:33 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/19 23:00:39 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/20 18:48:08 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,7 @@ SRC 	= 	main.c \
 			fork.c \
 			clockmaker.c \
 			ph_calloc.c \
-			ft_atoll.c \
-			utils.c
+			ft_atoll.c
 SRC_OBJ	= 	$(SRC:.c=.o)
 
 $(NAME): $(SRC_OBJ) 
@@ -39,7 +38,7 @@ clean:
 	rm -f $(SRC_OBJ)
 
 fclean: clean
-	@rm -f ./philo
+	rm -f ./philo
 
 re: fclean all
 
