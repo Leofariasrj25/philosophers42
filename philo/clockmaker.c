@@ -6,11 +6,12 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:57:57 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 22:01:57 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:36:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "metaphysics.h"
+#include <sys/time.h>
 #include <unistd.h>
 
 long	get_timestamp_ms(long time_start_ms)
