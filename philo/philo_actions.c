@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 15:29:01 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 22:57:54 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:52:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int	philo_eat_meal(t_philo *philosopher)
 {
-	long	lt_eat;
 	int		ret_code;
 
 	if (has_forks(philosopher))
@@ -26,8 +25,8 @@ int	philo_eat_meal(t_philo *philosopher)
 			philosopher->state = PHILO_DEAD;
 			return (-1);
 		}
-		lt_eat = get_currtime_ms();
 		ret_code = micro_sleep(philosopher->tt_eat, philosopher);
+		philosopher->lt_eat = get_currtime_ms();
 		if (ret_code == PHILO_DEAD)
 		{
 			philosopher->state = PHILO_DEAD;
@@ -35,7 +34,6 @@ int	philo_eat_meal(t_philo *philosopher)
 		}
 		else if (ret_code == MATRIX_END)
 			return (MATRIX_END);
-		philosopher->lt_eat = lt_eat;
 		return (philo_sleep(philosopher));
 	}
 	return (0);
@@ -69,6 +67,7 @@ void	philo_think(t_philo *philo)
 	{
 		print_status(philo, "is thinking", PHILO_THINK);
 	}
+	usleep(1);
 }
 
 int	has_forks(t_philo *philosopher)
@@ -92,7 +91,7 @@ int	check_alive(t_philo *philosopher)
 	else
 		checkpoint = philosopher->lt_eat;
 	c_time = get_currtime_ms();
-	if (c_time < (checkpoint + philosopher->tt_die))
+	if (c_time <= (checkpoint + philosopher->tt_die))
 		return (1);
 	else
 		return (PHILO_DEAD);

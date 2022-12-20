@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 23:20:15 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:28:26 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,14 @@ void	*simulation(void *param)
 	if (philo->philo_id % 2 == 0)
 	{
 		print_status(philo, "is thinking", PHILO_THINK);
-		usleep(philo->tt_eat);
+		micro_sleep(philo->tt_eat, philo);
 	}
 	while (1)
 	{
 		philo_status = philo_lifecycle(philo);
 		if (philo_status == PHILO_DEAD || philo_status == MATRIX_END)
 			break ;
+		usleep(1000);
 	}
 	philo_put_forks_down(philo);
 	return (NULL);

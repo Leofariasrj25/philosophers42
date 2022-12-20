@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:57:57 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 23:36:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/20 18:45:56 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ long	get_currtime_ms(void)
 	long			ctime;
 
 	gettimeofday(&current_time, NULL);
-	ctime = (current_time.tv_sec * 1000000) + (current_time.tv_usec);
-	ctime = ctime / 1000;
+	ctime = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
 	return (ctime);
 }
 

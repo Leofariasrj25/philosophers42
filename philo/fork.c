@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_actions2.c                                   :+:      :+:    :+:   */
+/*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:29:29 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 22:14:11 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:43:32 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	philo_take_lfork(t_philo *philo)
 			if (check_alive(philo) == 0)
 				return (PHILO_DEAD);
 			philo->lfork_mutex = &philo->forks[philo->philo_id - 1];
-			print_status(philo, "has taken fork", PHILO_THINK);
+			print_status(philo, "has taken a fork", PHILO_THINK);
 			return (1);
 		}
 	}
@@ -63,6 +63,8 @@ int	philo_take_rfork(t_philo *philo)
 {
 	if (!philo)
 		return (-1);
+	if (philo->n_of_philos == 1)
+		return (0);
 	if (philo->state == PHILO_THINK && philo->rfork_mutex == NULL)
 	{
 		if (pthread_mutex_lock(&philo->forks[get_right_index(philo)]) == 0)
@@ -72,7 +74,7 @@ int	philo_take_rfork(t_philo *philo)
 			if (check_alive(philo) == 0)
 				return (PHILO_DEAD);
 			philo->rfork_mutex = &philo->forks[get_right_index(philo)];
-			print_status(philo, "has taken fork", PHILO_THINK);
+			print_status(philo, "has taken a fork", PHILO_THINK);
 			return (1);
 		}
 	}
