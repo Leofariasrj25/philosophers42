@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:51:17 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/17 22:50:36 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 21:48:51 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 int				load_meta(t_philo *philosopher, long *values);
 int				load_defaults(int p_id, t_philo *ph, pthread_mutex_t *print_m);
 pthread_mutex_t	*create_print_mutex(void);
+void			destroy_resources(void *philos, pthread_mutex_t *print_mutex);
 
 t_philo	*philo_create(long *values)
 {
@@ -44,13 +45,18 @@ t_philo	*philo_create(long *values)
 		load_meta(&philos[i], values);
 		if (load_defaults(i + 1, &philos[i], print_mutex) != 0)
 		{
-			free(philos);
-			pthread_mutex_destroy(print_mutex);
-			free(print_mutex);
+			destroy_resources(philos, print_mutex);
 			return (NULL);
 		}
 	}
 	return (philos);
+}
+
+void	destroy_resources(void *philos, pthread_mutex_t *print_mutex)
+{
+	free(philos);
+	pthread_mutex_destroy(print_mutex);
+	free(print_mutex);
 }
 
 int	load_defaults(int p_id, t_philo *philo, pthread_mutex_t *p_mutex)
@@ -73,6 +79,7 @@ int	load_meta(t_philo *philosopher, long *values)
 	philosopher->tt_eat = values[TT_EAT];
 	philosopher->tt_sleep = values[TT_SLEEP];
 	philosopher->min_meals = values[MIN_MEALS];
+	philosopher->n_of_meals = 0;
 	return (0);
 }
 

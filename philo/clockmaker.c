@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/09 13:57:57 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/18 21:37:55 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 22:01:57 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,19 @@ long	get_currtime_ms(void)
 	return (ctime);
 }
 
-void	micro_sleep(long duration, t_philo *philo)
+int	micro_sleep(long duration, t_philo *philo)
 {
 	long	start_time;
-	
+	long	ret_code;
+
 	start_time = get_currtime_ms();
-	while (start_time + duration >= get_currtime_ms() && check_alive(philo)) 
-		usleep(duration / 5);
-	return ;
+	while (start_time + duration >= get_currtime_ms())
+	{
+		ret_code = check_alive(philo);
+		if (ret_code == PHILO_DEAD)
+			return (PHILO_DEAD);
+		else if (ret_code == MATRIX_END)
+			return (MATRIX_END);
+	}
+	return (0);
 }

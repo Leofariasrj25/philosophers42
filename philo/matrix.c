@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 02:44:15 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:05:26 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 #include <unistd.h>
 
 pthread_mutex_t	*fork_create(int n_of_philos);
-pthread_mutex_t *create_state_mutex(void);
+pthread_mutex_t	*create_state_mutex(void);
+void			philo_think(t_philo *philo);
+int				philo_lifecycle(t_philo *philo);
 
 int	dinner_start(t_table *table)
 {
 	long	simul_start;
 	int		i;
-	
-	table->philo_threads = (pthread_t *) ph_calloc(table->n_of_philos,\
-		 sizeof(pthread_t));
+
+	table->philo_threads = (pthread_t *) ph_calloc(table->n_of_philos, \
+		sizeof(pthread_t));
 	if (!table->philo_threads)
 		return (-1);
 	table->forks = fork_create(table->n_of_philos);
@@ -34,16 +36,17 @@ int	dinner_start(t_table *table)
 		table->philos[i].matrix_start = simul_start;
 		table->philos[i].lt_eat = 0;
 		table->philos[i].forks = table->forks;
-		if (pthread_create(&table->philo_threads[i], NULL, simulation,\
-				 (void *) &table->philos[i]) != 0)
+		if (pthread_create(&table->philo_threads[i], NULL, simulation, \
+			(void *) &table->philos[i]) != 0)
+		{
 			printf("Wrong access\n");
-
+		}
 		i++;
 	}
 	return (0);
 }
 
-int dinner_end(t_table *table) 
+int	dinner_end(t_table *table)
 {
 	int	i;
 
@@ -71,52 +74,46 @@ int dinner_end(t_table *table)
 
 void	*simulation(void *param)
 {
-	t_philo			*philo;
-	
+	t_philo	*philo;
+	int		philo_status;	
+
 	philo = (t_philo *) param;
-	if (philo->philo_id % 2 != 0)
+	if (philo->philo_id % 2 == 0)
 	{
 		print_status(philo, "is thinking", PHILO_THINK);
-		usleep(60);
+		usleep(philo->tt_eat);
 	}
-	else 
-		print_status(philo, "is thinking", PHILO_THINK);
 	while (1)
 	{
-		int philo_status = check_alive(philo);
-		if (philo_status == 0)
-		{
-			print_status(philo, "is dead", PHILO_DEAD);
+		philo_status = philo_lifecycle(philo);
+		if (philo_status == PHILO_DEAD || philo_status == MATRIX_END)
 			break ;
-		}	
-		if (philo_status == -1)
-			break ;
-		if (philo_take_forks(philo) == -1)
-			break ;
-		philo_status = philo_eat_meal(philo);
-		if (philo_status == -1)
-			break ;
-		if ((philo->lfork_mutex == NULL && philo->rfork_mutex == NULL) && philo->state == PHILO_THINK)
-			print_status(philo, "is thinking", PHILO_THINK);
 	}
 	philo_put_forks_down(philo);
 	return (NULL);
 }
 
-int	check_is_dinner_over(t_philo *philo)
+int	philo_lifecycle(t_philo *philo)
 {
-	int	is_dinner_over;
+	int		philo_status;	
 
-	pthread_mutex_lock(philo->banquet->dinner_mutex);
-	if (philo->banquet->is_over == 1)
-		is_dinner_over = 1;
-	else
-		is_dinner_over = 0;
-	pthread_mutex_unlock(philo->banquet->dinner_mutex);	
-	return (is_dinner_over);
+	philo_status = check_alive(philo);
+	if (philo_status == PHILO_DEAD)
+	{
+		print_status(philo, "died", PHILO_DEAD);
+		return (PHILO_DEAD);
+	}	
+	if (philo_status == MATRIX_END)
+		return (MATRIX_END);
+	philo_take_forks(philo);
+	philo_status = philo_eat_meal(philo);
+	if (philo_status == MATRIX_END)
+		return (MATRIX_END);
+	philo_think(philo);
+	return (0);
 }
 
-pthread_mutex_t *fork_create(int n_of_philos)
+pthread_mutex_t	*fork_create(int n_of_philos)
 {
 	pthread_mutex_t		*forks;
 	int					i;
@@ -129,13 +126,4 @@ pthread_mutex_t *fork_create(int n_of_philos)
 		i++;
 	}
 	return (forks);
-}
-
-void	set_dinner_over(t_philo *philosopher)
-{
-	pthread_mutex_lock(philosopher->print_mutex);
-	pthread_mutex_lock(philosopher->banquet->dinner_mutex);
-	philosopher->banquet->is_over = 1;
-	pthread_mutex_unlock(philosopher->banquet->dinner_mutex);
-	pthread_mutex_unlock(philosopher->print_mutex);
 }

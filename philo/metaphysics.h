@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/18 17:44:03 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 22:15:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,15 @@
 #  define PHILO_DEAD 4
 # endif
 
+# ifndef MATRIX_END
+#  define MATRIX_END 42
+# endif
+
 typedef struct s_philo_dinner
 {
 	pthread_mutex_t	*dinner_mutex;
+	int				curr_meals;
+	int				total_meals;
 	int				is_over;	
 }	t_dinner;
 
@@ -47,6 +53,7 @@ typedef struct s_thinker
 	long			tt_die;
 	long			tt_eat;
 	long			tt_sleep;
+	long			n_of_meals;
 	long			min_meals;
 	long			matrix_start;
 	long			lt_eat;
@@ -70,7 +77,6 @@ typedef struct s_ideal_table
 	pthread_mutex_t	*forks;
 }	t_table;
 
-
 // simulation
 int				philo_load_meta(t_philo *philosopher, int *values);
 t_philo			*philo_create(long *values);
@@ -84,8 +90,6 @@ void			*simulation(void *param);
 int				philo_sleep(t_philo *philosopher);
 int				philo_eat_meal(t_philo *philosopher);
 int				philo_take_forks(t_philo *philosopher);
-int				philo_take_lfork(t_philo *philosopher);
-int				philo_take_rfork(t_philo *philosopher);
 int				check_alive(t_philo *philosopher);
 int				philo_put_forks_down(t_philo *philosopher);
 
@@ -96,7 +100,7 @@ void			*monitor_watch(void *param);
 // time
 long			get_timestamp_ms(long time_start_ms);
 long			get_currtime_ms(void);
-void			micro_sleep(long duration, t_philo *philo);
+int				micro_sleep(long duration, t_philo *philosopher);
 
 //input
 int				get_input(int argc, char **argv, long *values);
@@ -115,4 +119,10 @@ void			destroy_all_philos(t_philo *philos, int n_of_philos);
 void			destroy_all_forks(pthread_mutex_t *forks, int n_of_forks);
 void			destroy_philo_locks(t_philo *philos);
 void			destroy_table(t_table *table);
+
+// junk
+int				has_forks(t_philo *philosopher);
+int				check_total_meals(t_philo *philosopher);
+int				add_total_meals(t_philo *philosopher);
+long			get_checkpoint_ms(t_philo *philosopher);
 #endif

@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 19:04:40 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/17 23:20:41 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:01:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,3 @@ void	destroy_philo_locks(t_philo *philos)
 		free(philos[0].print_mutex);
 	}
 }
-
-/*void	destroy_table(t_table *table)
-{
-	if (!table->dinner_lock)
-		return ;
-	pthread_mutex_destroy(table->dinner_lock);
-	free(table->dinner_lock);
-}*/
