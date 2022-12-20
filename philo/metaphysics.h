@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 22:15:24 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:12:35 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 # define METAPHYSICS_H
 
 # include <pthread.h>
-# include <sys/time.h>
 # include <stdlib.h>
-# include <stdio.h>
 
 # ifndef PHILO_SLEEP
 #  define PHILO_SLEEP 1

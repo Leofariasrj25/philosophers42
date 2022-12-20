@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 23:05:26 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:20:15 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	dinner_start(t_table *table)
 		if (pthread_create(&table->philo_threads[i], NULL, simulation, \
 			(void *) &table->philos[i]) != 0)
 		{
-			printf("Wrong access\n");
+			put_err_str("{ERROR}: error during thread creation\n");
+			return (-1);
 		}
 		i++;
 	}
