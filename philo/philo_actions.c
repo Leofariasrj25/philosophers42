@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:58:05 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 18:49:05 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:55:33 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ int	philo_eat_meal(t_philo *philosopher)
 		if ((ctime + philosopher->tt_eat) < (check_p + philosopher->tt_die))
 		{
 			if (micro_sleep(philosopher->tt_eat, philosopher) == MATRIX_END)
+			{
+				philo_put_forks_down(philosopher);
 				return (MATRIX_END);
+			}
 		}
 		else
 		{
