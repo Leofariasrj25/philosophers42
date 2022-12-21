@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:02:42 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 16:20:52 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:39:38 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	print_status(t_philo *philosopher, char *status, int code)
 	long	timestamp;
 
 	pthread_mutex_lock(philosopher->print_mutex);
-	pthread_mutex_lock(philosopher->banquet->dinner_mutex);
 	timestamp = get_timestamp_ms(philosopher->matrix_start);
+	pthread_mutex_lock(philosopher->banquet->dinner_mutex);
 	if (code == PHILO_DEAD && philosopher->banquet->is_over == 0)
 	{	
-		printf("%ld %ld %s\n", timestamp, philosopher->philo_id, status);
 		philosopher->banquet->is_over = 1;
+		printf("%ld %ld %s\n", timestamp, philosopher->philo_id, status);
 		pthread_mutex_unlock(philosopher->banquet->dinner_mutex);
 		pthread_mutex_unlock(philosopher->print_mutex);
 		return ;

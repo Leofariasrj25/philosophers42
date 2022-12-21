@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:29:29 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/20 17:43:32 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:52:32 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,6 @@ int	philo_take_lfork(t_philo *philo)
 	{
 		if (pthread_mutex_lock(&philo->forks[philo->philo_id - 1]) == 0)
 		{
-			if (check_is_dinner_over(philo) == 1)
-				return (-1);
-			if (check_alive(philo) == 0)
-				return (PHILO_DEAD);
 			philo->lfork_mutex = &philo->forks[philo->philo_id - 1];
 			print_status(philo, "has taken a fork", PHILO_THINK);
 			return (1);
@@ -69,10 +65,6 @@ int	philo_take_rfork(t_philo *philo)
 	{
 		if (pthread_mutex_lock(&philo->forks[get_right_index(philo)]) == 0)
 		{
-			if (check_is_dinner_over(philo) == 1)
-				return (-1);
-			if (check_alive(philo) == 0)
-				return (PHILO_DEAD);
 			philo->rfork_mutex = &philo->forks[get_right_index(philo)];
 			print_status(philo, "has taken a fork", PHILO_THINK);
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 18:33:12 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:34:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	dinner_end(t_table *table)
 		pthread_join(table->philo_threads[i], NULL);
 		i++;
 	}
+	i = 0;
 	while (i < table->n_of_philos)
 	{
 		pthread_mutex_destroy(&table->forks[i]);
@@ -72,6 +73,7 @@ int	dinner_end(t_table *table)
 	return (0);
 }
 
+#include <stdio.h>
 void	*simulation(void *param)
 {
 	t_philo	*philo;
@@ -107,6 +109,11 @@ int	philo_lifecycle(t_philo *philo)
 		return (MATRIX_END);
 	philo_take_forks(philo);
 	philo_status = philo_eat_meal(philo);
+	if (philo_status == PHILO_DEAD)
+	{
+		print_status(philo, "died", PHILO_DEAD);
+		return (PHILO_DEAD);
+	}	
 	if (philo_status == MATRIX_END)
 		return (MATRIX_END);
 	philo_think(philo);
