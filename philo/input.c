@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:50:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 18:24:52 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:56:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	get_input(int argc, char **argv, long *values)
 	char	*usage;
 	int		ret_code;
 
+	err_msg = NULL;
 	usage = "{USAGE}: ./philo <nº of philosophers> <time to die> <time to eat> \
 		<time to sleep> [nº of times every philo must eat]\n";
 	if (check_input_size(argc))
@@ -42,7 +43,8 @@ int	get_input(int argc, char **argv, long *values)
 		err_msg = "{ERROR}: out of bounds integer value\n";
 	if (ret_code == 4)
 		err_msg = "{ERROR}: invalid input\n";
-	put_err_str(err_msg);
+	if (err_msg != NULL)		
+		put_err_str(err_msg);
 	return (ret_code);
 }
 
