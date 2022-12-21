@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:58:05 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 17:00:55 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:49:05 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,17 @@ int	philo_eat_meal(t_philo *philosopher)
 		check_p = get_checkpoint_ms(philosopher);
 		ctime = get_currtime_ms();
 		if ((ctime + philosopher->tt_eat) < (check_p + philosopher->tt_die))
-			micro_sleep(philosopher->tt_eat, philosopher);
+		{
+			if (micro_sleep(philosopher->tt_eat, philosopher) == MATRIX_END)
+				return (MATRIX_END);
+		}
 		else
 		{
-			micro_sleep((check_p + philosopher->tt_die) - ctime, philosopher);
+			int ret_code = micro_sleep((check_p + philosopher->tt_die) - ctime, philosopher);
 			philo_put_forks_down(philosopher);
+			if (ret_code == MATRIX_END)
+				return (MATRIX_END);
+			philosopher->state = PHILO_DEAD;
 			return (PHILO_DEAD);
 		}
 		philosopher->lt_eat = get_currtime_ms();
@@ -71,6 +77,7 @@ void	philo_think(t_philo *philo)
 		&& philo->state == PHILO_THINK)
 	{
 		print_status(philo, "is thinking", PHILO_THINK);
+		usleep(100);
 	}
 }
 

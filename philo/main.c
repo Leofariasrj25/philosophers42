@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:24:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 22:12:34 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:34:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ int	main(int argc, char **argv)
 	if (table.philos == NULL)
 		return (-4);
 	table_init(&table);
-	dinner_setup(&table);
+	if (dinner_setup(&table))
+		return (-10);
 	op_code = dinner_start(&table);
 	if (op_code != 0)
+	{
+		destroy_table(&table);
 		return (op_code);
+	}
 	op_code = dinner_end(&table);
 	if (op_code != 0)
 		return (op_code);
@@ -49,6 +53,7 @@ int	dinner_setup(t_table *table)
 	table->banquet->dinner_mutex = ph_calloc(1, sizeof(pthread_mutex_t));
 	if (!table->banquet->dinner_mutex)
 	{
+		destroy_all_philos(table->philos, table->philos[0].n_of_philos);
 		free(table->banquet);
 		return (-1);
 	}

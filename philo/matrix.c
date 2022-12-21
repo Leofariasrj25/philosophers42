@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 16:28:49 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:33:12 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	dinner_start(t_table *table)
 		return (-1);
 	table->forks = fork_create(table->n_of_philos);
 	simul_start = get_currtime_ms();
-	i = 0;
-	while (i < table->n_of_philos)
+	i = -1;
+	while (++i < table->n_of_philos)
 	{
 		table->philos[i].banquet = table->banquet;
 		table->philos[i].matrix_start = simul_start;
@@ -42,7 +42,6 @@ int	dinner_start(t_table *table)
 			put_err_str("{ERROR}: error during thread creation\n");
 			return (-1);
 		}
-		i++;
 	}
 	return (0);
 }

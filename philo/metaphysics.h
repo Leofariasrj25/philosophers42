@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 18:21:18 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:39:20 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ t_philo			*philo_create(long *values);
 int				dinner_start(t_table *dinner_table);
 int				dinner_end(t_table *dinner_table);
 int				check_is_dinner_over(t_philo *philo);
-void			set_dinner_over(t_philo *philosopher);
 void			*simulation(void *param);
 
 // philo actions
@@ -90,10 +89,6 @@ int				philo_eat_meal(t_philo *philosopher);
 int				philo_take_forks(t_philo *philosopher);
 int				check_alive(t_philo *philosopher);
 int				philo_put_forks_down(t_philo *philosopher);
-
-// monitor
-int				monitor_start(t_table *dinner_table);
-void			*monitor_watch(void *param);
 
 // time
 long			get_timestamp_ms(long time_start_ms);
