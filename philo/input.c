@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:50:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/14 19:31:52 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:24:52 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,31 @@ int	get_input(int argc, char **argv, long *values)
 	}
 	ret_code = check_input_values(argc, argv, values);
 	if (ret_code == 2)
-	{
 		err_msg = "{ERROR}: arg(s) must be greater than zero\n";
-		put_err_str(err_msg);
-	}
 	if (ret_code == 3)
-	{
 		err_msg = "{ERROR}: out of bounds integer value\n";
-		put_err_str(err_msg);
-	}
+	if (ret_code == 4)
+		err_msg = "{ERROR}: invalid input\n";
+	put_err_str(err_msg);
 	return (ret_code);
 }
 
 int	check_input_values(int argc, char **argv, long *values)
 {
+	long long	*ret;
 	long long	number;
 	int			i;
 
 	i = 1;
 	while (i < argc)
 	{
-		number = ft_atoll(argv[i]);
+		ret = ft_atoll(argv[i]);
+		if (!ret)
+		{
+			return (4);
+		}
+		number = *ret;
+		free(ret);
 		if (number <= 0)
 			return (2);
 		else if (number > U_INT_MAX)

@@ -6,19 +6,22 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 19:01:50 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/12 21:58:46 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:21:44 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	is_space(char c)
+#include "metaphysics.h"
+
+static int	is_space(char c)
 {
-	if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == ' ')
+	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r' || c == ' ')
 		return (1);
 	else
 		return (0);
 }
 
-int	is_digit(char c)
+static int	is_digit(char c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
@@ -26,30 +29,51 @@ int	is_digit(char c)
 		return (0);
 }
 
-long long	ft_atoll(char *str)
+static int	check_signal(const char *str, int *i)
 {
-	long long	number;
-	int			i;
-	int			signal;
+	int	signal;
 
-	if (!str)
-		return (0);
-	i = 0;
 	signal = 1;
-	number = 0;
+	if (str[*i] == '-' || str[*i] == '+')
+	{
+		if (str[*i] == '-')
+			signal *= -1;
+		*i = *i + 1;
+	}
+	return (signal);
+}
+
+long long	*clean_ret(long long *ret)
+{
+	free(ret);
+	return (NULL);
+}
+
+long long	*ft_atoll(const char *str)
+{
+	long long	res;
+	int			signal;
+	int			i;
+	long long	*ret;
+
+	ret = NULL;
+	res = 0;
+	signal = 1;
+	i = 0;
 	while (is_space(str[i]))
 		i++;
-	if (str[i] == '+' || str[i] == '-')
-	{
-		if (str[i] == '-')
-			signal = -1;
-	}
+	signal = check_signal(str, &i);
+	if (str[i] != '\0' || is_digit(str[i]))
+		ret = malloc(sizeof(long long));
+	else
+		return (NULL);
 	while (is_digit(str[i]))
 	{
-		number = number * 10 + (str[i] - 48);
+		res = res * 10 + (str[i] - 48);
 		i++;
 	}
-	if (str[i] != '\0')
-		return (-1);
-	return (number * signal);
+	if (str[i] != '\0' || !ret)
+		return (clean_ret(ret));
+	*ret = res * signal;
+	return (ret);
 }

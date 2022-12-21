@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:09:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/20 17:17:24 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:21:18 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int				micro_sleep(long duration, t_philo *philosopher);
 
 //input
 int				get_input(int argc, char **argv, long *values);
-long long		ft_atoll(char *str);
+long long		*ft_atoll(const char *str);
 
 // output 
 void			print_status(t_philo *philosopher, char *msg, int code);
