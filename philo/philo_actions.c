@@ -5,35 +5,40 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 15:29:01 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/20 17:52:47 by lfarias-         ###   ########.fr       */
+/*   Created: 2022/12/21 16:58:05 by lfarias-          #+#    #+#             */
+/*   Updated: 2022/12/21 17:00:55 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "metaphysics.h"
 #include <unistd.h>
 
+long	get_checkpoint_ms(t_philo *philo);
+
 int	philo_eat_meal(t_philo *philosopher)
 {
-	int		ret_code;
+	long	check_p;
+	long	ctime;
 
 	if (has_forks(philosopher))
 	{
-		print_status(philosopher, "is eating", PHILO_EAT);
 		if (add_total_meals(philosopher) == 1)
 		{
 			philosopher->state = PHILO_DEAD;
 			return (-1);
 		}
-		ret_code = micro_sleep(philosopher->tt_eat, philosopher);
-		philosopher->lt_eat = get_currtime_ms();
-		if (ret_code == PHILO_DEAD)
+		print_status(philosopher, "is eating", PHILO_EAT);
+		check_p = get_checkpoint_ms(philosopher);
+		ctime = get_currtime_ms();
+		if ((ctime + philosopher->tt_eat) < (check_p + philosopher->tt_die))
+			micro_sleep(philosopher->tt_eat, philosopher);
+		else
 		{
-			philosopher->state = PHILO_DEAD;
+			micro_sleep((check_p + philosopher->tt_die) - ctime, philosopher);
+			philo_put_forks_down(philosopher);
 			return (PHILO_DEAD);
 		}
-		else if (ret_code == MATRIX_END)
-			return (MATRIX_END);
+		philosopher->lt_eat = get_currtime_ms();
 		return (philo_sleep(philosopher));
 	}
 	return (0);
@@ -67,7 +72,6 @@ void	philo_think(t_philo *philo)
 	{
 		print_status(philo, "is thinking", PHILO_THINK);
 	}
-	usleep(1);
 }
 
 int	has_forks(t_philo *philosopher)
@@ -83,6 +87,7 @@ int	check_alive(t_philo *philosopher)
 {
 	long	checkpoint;
 	long	c_time;
+	long	ret_code;
 
 	if (check_is_dinner_over(philosopher) == 1)
 		return (MATRIX_END);
@@ -91,8 +96,9 @@ int	check_alive(t_philo *philosopher)
 	else
 		checkpoint = philosopher->lt_eat;
 	c_time = get_currtime_ms();
-	if (c_time <= (checkpoint + philosopher->tt_die))
-		return (1);
+	if (c_time < (checkpoint + philosopher->tt_die))
+		ret_code = 1;
 	else
-		return (PHILO_DEAD);
+		ret_code = PHILO_DEAD;
+	return (ret_code);
 }

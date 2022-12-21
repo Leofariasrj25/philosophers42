@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/20 17:28:26 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/21 16:28:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	*simulation(void *param)
 		philo_status = philo_lifecycle(philo);
 		if (philo_status == PHILO_DEAD || philo_status == MATRIX_END)
 			break ;
-		usleep(1000);
 	}
 	philo_put_forks_down(philo);
 	return (NULL);
