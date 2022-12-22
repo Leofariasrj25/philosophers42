@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 11:29:29 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 19:52:32 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:57:08 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	philo_take_rfork(t_philo *philosopher);
 
 int	philo_take_forks(t_philo *philosopher)
 {
-	if (philosopher->philo_id == philosopher->n_of_philos)
+	if (philosopher->philo_id % 2 != 0)
 	{
 		if (philo_take_lfork(philosopher) == -1)
 			return (-1);

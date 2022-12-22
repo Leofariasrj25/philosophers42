@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 22:56:24 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/19 22:57:47 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:32:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,13 @@ long	get_checkpoint_ms(t_philo *philosopher)
 		return (philosopher->matrix_start);
 	else
 		return (philosopher->lt_eat);
+}
+
+int	has_forks(t_philo *philosopher)
+{
+	if ((philosopher->lfork_mutex != NULL && philosopher->rfork_mutex != NULL) \
+		&& (philosopher->state == PHILO_THINK))
+		return (1);
+	else
+		return (0);
 }

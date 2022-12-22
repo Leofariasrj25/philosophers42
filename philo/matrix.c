@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:50:12 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 19:34:28 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:20:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	dinner_end(t_table *table)
 	return (0);
 }
 
-#include <stdio.h>
 void	*simulation(void *param)
 {
 	t_philo	*philo;

@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:50:27 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 19:56:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:21:37 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	get_input(int argc, char **argv, long *values)
 		err_msg = "{ERROR}: out of bounds integer value\n";
 	if (ret_code == 4)
 		err_msg = "{ERROR}: invalid input\n";
-	if (err_msg != NULL)		
+	if (err_msg != NULL)
 		put_err_str(err_msg);
 	return (ret_code);
 }

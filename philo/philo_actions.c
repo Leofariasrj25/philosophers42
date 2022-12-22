@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 16:58:05 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/21 18:55:33 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/22 14:58:51 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 #include <unistd.h>
 
 long	get_checkpoint_ms(t_philo *philo);
+int		eat_as_much_it_can(t_philo *philosopher);
 
 int	philo_eat_meal(t_philo *philosopher)
 {
-	long	check_p;
-	long	ctime;
+	int	ret_code;
 
+	ret_code = 0;
 	if (has_forks(philosopher))
 	{
 		if (add_total_meals(philosopher) == 1)
@@ -28,27 +29,43 @@ int	philo_eat_meal(t_philo *philosopher)
 			return (-1);
 		}
 		print_status(philosopher, "is eating", PHILO_EAT);
-		check_p = get_checkpoint_ms(philosopher);
-		ctime = get_currtime_ms();
-		if ((ctime + philosopher->tt_eat) < (check_p + philosopher->tt_die))
+		ret_code = eat_as_much_it_can(philosopher);
+		if (ret_code == MATRIX_END)
+			return (MATRIX_END);
+		if (ret_code == PHILO_DEAD)
 		{
-			if (micro_sleep(philosopher->tt_eat, philosopher) == MATRIX_END)
-			{
-				philo_put_forks_down(philosopher);
-				return (MATRIX_END);
-			}
-		}
-		else
-		{
-			int ret_code = micro_sleep((check_p + philosopher->tt_die) - ctime, philosopher);
-			philo_put_forks_down(philosopher);
-			if (ret_code == MATRIX_END)
-				return (MATRIX_END);
 			philosopher->state = PHILO_DEAD;
 			return (PHILO_DEAD);
 		}
 		philosopher->lt_eat = get_currtime_ms();
 		return (philo_sleep(philosopher));
+	}
+	return (0);
+}
+
+int	eat_as_much_it_can(t_philo *philosopher)
+{
+	long	check_p;
+	long	ctime;
+	long	ret_code;
+
+	ret_code = 0;
+	check_p = get_checkpoint_ms(philosopher);
+	ctime = get_currtime_ms();
+	if ((ctime + philosopher->tt_eat) < (check_p + philosopher->tt_die))
+	{
+		if (micro_sleep(philosopher->tt_eat, philosopher) == MATRIX_END)
+		{
+			philo_put_forks_down(philosopher);
+			return (MATRIX_END);
+		}
+	}
+	else
+	{
+		ret_code = micro_sleep((check_p + philosopher->tt_die) - ctime, \
+			philosopher);
+		philo_put_forks_down(philosopher);
+		return (ret_code);
 	}
 	return (0);
 }
@@ -82,15 +99,6 @@ void	philo_think(t_philo *philo)
 		print_status(philo, "is thinking", PHILO_THINK);
 		usleep(100);
 	}
-}
-
-int	has_forks(t_philo *philosopher)
-{
-	if ((philosopher->lfork_mutex != NULL && philosopher->rfork_mutex != NULL) \
-		&& (philosopher->state == PHILO_THINK))
-		return (1);
-	else
-		return (0);
 }
 
 int	check_alive(t_philo *philosopher)
