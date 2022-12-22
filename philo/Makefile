@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/23 18:43:33 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/21 20:13:22 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/22 15:16:18 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,5 +52,5 @@ r1: all
 r2: all
 	./$(NAME) 4 800 200 200
 
-r3: all
-	./$(NAME) 4 800 200 200
+.PHONY:
+	all clean fclean re run r1 r2
